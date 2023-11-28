@@ -8,3 +8,6 @@ Copyright (c) 2023 Yi Jie Tseng
 pygame, Pillow, tkinter and the sounds and pictures of our lab memebers
 
 sounds and pictures can be found in the dependency.zip
+
+## Usage
+Download the executable file and execute it to play sounds
