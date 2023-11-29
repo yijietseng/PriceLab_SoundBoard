@@ -1,6 +1,6 @@
 """
 Project: Lab_sound_board
-Version: 1.0.0
+Version: 1.0.1
 Author: Yi Jie (Josh) Tseng
 Description: This is to remember the awesomeness of our lab members
 """
@@ -11,30 +11,56 @@ import pygame, os, sys
 from PIL import ImageTk, Image
 
 
+# Define a variable to store the current image
+current_image = None
+
 def play_audio(sound, Name):
     show_pic(Name)
-    pygame.mixer.init() 
+
+    pygame.mixer.init()
+
     # Get the absolute path to the "sounds" directory
     sounds_dir = os.path.join(os.path.dirname(__file__), "sounds")
-    
+
     # Construct the absolute path to the audio file
     audio_path = os.path.join(sounds_dir, f"{sound}.mp3")
-    
+
     pygame.mixer.music.load(audio_path)
     pygame.mixer.music.play()
+
     pygame.mixer.init()
-    
-    
+
+
 def show_pic(Name):
+    global current_image
     pic_dir = os.path.join(os.path.dirname(__file__), "Pics")
     img_path = os.path.join(pic_dir, f"{Name}.jpg")
-    
+
     image = Image.open(img_path)
-    image = image.resize((350,350), Image.LANCZOS)
+    image = image.resize((350, 350), Image.LANCZOS)
     pic = ImageTk.PhotoImage(image)
-        
-    canv.create_image(0,0, image=pic, anchor="nw")
-    canv.image=pic
+
+    canv.create_image(0, 0, image=pic, anchor="nw")
+    canv.image = pic
+
+    # Update the current image variable
+    current_image = pic
+
+def show_default_image():
+    global current_image
+
+    # Check if the current image is not None (i.e., a button was pressed)
+    if current_image is None:
+        default_img_path = os.path.join(os.path.dirname(__file__), "Pics", "Lab_ledg.jpg")
+        default_image = Image.open(default_img_path)
+        default_image = default_image.resize((350, 350), Image.LANCZOS)
+        default_pic = ImageTk.PhotoImage(default_image)
+
+        canv.create_image(0, 0, image=default_pic, anchor="nw")
+        canv.image = default_pic
+
+        # Update the current image variable
+        current_image = default_pic
 
 #-----------------------------------------------------------------------------
     
@@ -72,18 +98,18 @@ label5 = tk.Label(window, text="Elli", font=("Helvetica", 20, "bold"), bg='white
 label6 = tk.Label(window, text="Chad", font=("Helvetica", 20, "bold"), bg='white')
 label7 = tk.Label(window, text="Emily", font=("Helvetica", 20, "bold"), bg='white')
 label8 = tk.Label(window, text="Random", font=("Helvetica", 20, "bold"), bg='white')
-label9 = tk.Label(window, text="Colman", font=("Helvetica", 20, "bold"), bg='white')
+label9 = tk.Label(window, text="Coleman", font=("Helvetica", 20, "bold"), bg='white')
 
 # Arrange labels and buttons in a grid layout with three columns
 label1.grid(row=0, column=0, pady=0)
 label2.grid(row=0, column=1, pady=0)
-label3.grid(row=2, column=2, pady=0)
-label4.grid(row=0, column=4, pady=0)
-label5.grid(row=0, column=2, pady=0)
-label6.grid(row=2, column=3, pady=0)
-label7.grid(row=2, column=4, pady=0)
+label3.grid(row=0, column=4, pady=0)
+label4.grid(row=0, column=3, pady=0)
+label5.grid(row=7, column=1, pady=0)
+label6.grid(row=3, column=4, pady=0)
+label7.grid(row=6, column=4, pady=0)
 label8.grid(row=0, column=5, pady=0)
-label9.grid(row=0, column=3, pady=0)
+label9.grid(row=0, column=2, pady=0)
 
 # Create buttons with customizations
 font_tuple = ("Helvetica", 9, "bold")
@@ -122,52 +148,55 @@ button5 = tk.Button(window, text="Go aWay! 2", command=lambda: play_audio("Go_aw
 button23 = tk.Button(window, text="Wuh u\nwant 4 me?", command=lambda: play_audio("wuh_u_want_4_me_Rebecca", 'Rebecca'), width=button_width, height=button_height, bg="orange", fg="black", font=font_tuple)
 button30 = tk.Button(window, text="Prove it", command=lambda: play_audio("prove-it", 'Rebecca'), width=button_width, height=button_height, bg="gainsboro", fg="black", font=font_tuple)
 button31 = tk.Button(window, text="Fudge", command=lambda: play_audio("fudge", 'Rebecca'), width=button_width, height=button_height, bg="steelblue", fg="black", font=font_tuple)
+button35 = tk.Button(window, text="Excuse me?!", command=lambda: play_audio("excuse-me", 'Rebecca'), width=button_width, height=button_height, bg="gold", fg="black", font=font_tuple)
 
 button4.grid(row=1, column=1, padx=15, pady=13, sticky="nsew")
 button5.grid(row=2, column=1, padx=15, pady=13, sticky="nsew")
 button23.grid(row=3, column=1, padx=15, pady=13, sticky="nsew")
 button30.grid(row=4, column=1, padx=15, pady=13, sticky="nsew")
 button31.grid(row=5, column=1, padx=15, pady=13, sticky="nsew")
+button35.grid(row=6, column=1, padx=15, pady=13, sticky="nsew")
 
 # Esteban
 button24 = tk.Button(window, text="Come in", command=lambda: play_audio("comein", 'Esteban'), width=button_width, height=button_height, bg="skyblue", fg="black", font=font_tuple)
 button26 = tk.Button(window, text="Shut up Chad", command=lambda: play_audio("shut-up-chad", 'Esteban'), width=button_width, height=button_height, bg="limegreen", fg="black", font=font_tuple)
 
-button24.grid(row=3, column=2, padx=15, pady=13, sticky="nsew")
-button26.grid(row=4, column=2, padx=15, pady=13, sticky="nsew")
+button24.grid(row=1, column=4, padx=15, pady=13, sticky="nsew")
+button26.grid(row=2, column=4, padx=15, pady=13, sticky="nsew")
 
 # Chad
 button2 = tk.Button(window, text="Disgusting!!!", command=lambda: play_audio("Disgusting_Chad", 'Chad'), width=button_width, height=button_height, bg="green", fg="white", font=font_tuple)
 button3 = tk.Button(window, text="Tuesday", command=lambda: play_audio("Tuesday_Chad", 'Chad'), width=button_width, height=button_height, bg="blue", fg="white", font=font_tuple)
 
-button2.grid(row=3, column=3, padx=15, pady=13, sticky="nsew")
-button3.grid(row=4, column=3, padx=15, pady=13, sticky="nsew")
+button2.grid(row=4, column=4, padx=15, pady=13, sticky="nsew")
+button3.grid(row=5, column=4, padx=15, pady=13, sticky="nsew")
 
 # NoahE
 button6 = tk.Button(window, text="Hasta la pasta", command=lambda: play_audio("pasta_Noah", 'Noah'), width=button_width, height=button_height, bg="purple", fg="white", font=font_tuple)
 
-button6.grid(row=1, column=4, padx=15, pady=13, sticky="nsew")
+button6.grid(row=1, column=3, padx=15, pady=13, sticky="nsew")
 
 # Coleman
 button33 = tk.Button(window, text="Chat GPT~", command=lambda: play_audio("chat-gtp",'Coleman'), width=button_width, height=button_height, bg="tomato", fg="black", font=font_tuple)
 
-button33.grid(row=1, column=3, padx=15, pady=13, sticky="nsew")
+button33.grid(row=1, column=2, padx=15, pady=13, sticky="nsew")
 
 
 # Elli
 button27 = tk.Button(window, text="Heh?!", command=lambda: play_audio("Heh", 'Elli'), width=button_width, height=button_height, bg="mediumseagreen", fg="black", font=font_tuple)
+button34 = tk.Button(window, text="Get outta\nhere Chad", command=lambda: play_audio("get-outta-here-Chad", 'Elli'), width=button_width, height=button_height, bg="lavender", fg="black", font=font_tuple)
 
-button27.grid(row=1, column=2, padx=15, pady=13, sticky="nsew")
-
+button27.grid(row=8, column=1, padx=15, pady=13, sticky="nsew")
+button34.grid(row=9, column=1, padx=15, pady=13, sticky="nsew")
 
 # Emily
 button15 = tk.Button(window, text="One Mome", command=lambda: play_audio("one-mome",'Emily'), width=button_width, height=button_height, bg="coral", fg="black", font=font_tuple)
 button16 = tk.Button(window, text="Hold pls", command=lambda: play_audio("hold-pulse",'Emily'), width=button_width, height=button_height, bg="khaki", fg="black", font=font_tuple)
 button17 = tk.Button(window, text="Frick\non a stick", command=lambda: play_audio("freak-on-a-stick",'Emily'), width=button_width, height=button_height, bg="orchid", fg="black", font=font_tuple)
 
-button15.grid(row=3, column=4, padx=15, pady=13, sticky="nsew")
-button16.grid(row=4, column=4, padx=15, pady=13, sticky="nsew")
-button17.grid(row=5, column=4, padx=15, pady=13, sticky="nsew")
+button15.grid(row=7, column=4, padx=15, pady=13, sticky="nsew")
+button16.grid(row=8, column=4, padx=15, pady=13, sticky="nsew")
+button17.grid(row=9, column=4, padx=15, pady=13, sticky="nsew")
 
 
 # Random
@@ -191,6 +220,14 @@ button22.grid(row=6, column=5, padx=15, pady=13, sticky="nsew")
 button25.grid(row=7, column=5, padx=15, pady=13, sticky="nsew")
 button28.grid(row=8, column=5, padx=15, pady=13, sticky="nsew")
 button32.grid(row=9, column=5, padx=15, pady=13, sticky="nsew")
+
+
+# Create a combined L-shaped button that spans both columns and rows
+button_combined = tk.Button(window, text="Welcome to\nthe Price Lab", command=lambda: play_audio("welcome-to-the-darkside", 'Lab_ledg'), width=button_width, height=button_height, bg="#7FFFD4", fg="black", font=("Helvetica", 20, "bold"))
+button_combined.grid(row=2, column=2, rowspan=3, columnspan=2, padx=(15, 15), pady=13, sticky="nsew")
+
+
+show_default_image()
 
 
 # Run the Tkinter event loop
